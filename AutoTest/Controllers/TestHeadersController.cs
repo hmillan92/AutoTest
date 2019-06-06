@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoTest.Clases;
 using AutoTest.Models;
 
 namespace AutoTest.Controllers
@@ -15,8 +16,43 @@ namespace AutoTest.Controllers
     {
         private AtestContext db = new AtestContext();
 
-        // GET: TestHeaders
-        public ActionResult Index()
+        public ActionResult AddSubCategory()
+        {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddSubCategory(AddSubCategoryView view)
+        {
+            //Si el modelo es valido
+            if (ModelState.IsValid)
+            {
+                //Lo busca el ID en la tabla subCategory lo que tenemos en el AddSubcategoryView
+                var subCategory = db.SubCategories.Find(view.SubCategoryID);
+                //Crea el TestDetailTmp
+                var testDetailTmp = new TestDetailTmp
+                {
+                    SubCategoryID = subCategory.SubCategoryID,
+                    SubCategoryName = subCategory.SubCategoryName,
+                    Value = view.Value,
+                    UserName = User.Identity.Name,
+                };
+                //Ahora lo mandamos a la abase de datos
+                db.TestDetailTmps.Add(testDetailTmp);
+                db.SaveChanges();
+                //Y mandamos al usuario a la vista create
+
+            }
+            //Si el modelo no es valido lo volvemos a pintar 
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName");
+            return View(view);
+        }
+
+            // GET: TestHeaders
+            public ActionResult Index()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             if (user == null)
