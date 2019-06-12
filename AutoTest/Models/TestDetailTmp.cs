@@ -17,12 +17,12 @@ namespace AutoTest.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        public int SubCategoryID { get; set; }
+        public int BusinessEntityID { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(100, ErrorMessage = "The field {0} must be maximun {1} characters")]
         [Display(Name = "SubCategory")]
-        [Index("SubCategory_SubCategoryName_Index", IsUnique = true)]
+        //[Index("SubCategory_SubCategoryName_Index", IsUnique = true)]
         public string SubCategoryName { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]

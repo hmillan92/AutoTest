@@ -24,10 +24,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SubCategoryID, "BusinessEntity", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BusinessEntityID, "Sub Category", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("SubCategoryID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
+                @Html.DropDownList("BusinessEntityID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BusinessEntityID, "", new { @class = "text-danger" })
             </div>
         </div>
 

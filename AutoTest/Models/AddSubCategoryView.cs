@@ -10,7 +10,7 @@ namespace AutoTest.Models
     {
         [Required(ErrorMessage = "The field {0} is required")]
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
-        public int SubCategoryID { get; set; }
+        public int BusinessEntityID { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]

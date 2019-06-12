@@ -19,7 +19,7 @@ namespace AutoTest.Controllers
         public ActionResult AddSubCategory()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName");
+            ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName");
             return View();
         }
 
@@ -29,12 +29,13 @@ namespace AutoTest.Controllers
             //Si el modelo es valido
             if (ModelState.IsValid)
             {
-                //Lo busca el ID en la tabla subCategory lo que tenemos en el AddSubcategoryView
-                var subCategory = db.SubCategories.Find(view.SubCategoryID);
+                //Busca el ID en la tabla subCategory lo que tenemos en el AddSubcategoryView
+                var subCategory = db.SubCategories.Find(view.BusinessEntityID);
                 //Crea el TestDetailTmp
                 var testDetailTmp = new TestDetailTmp
                 {
-                    SubCategoryID = subCategory.SubCategoryID,
+                    BusinessEntityID = subCategory.BusinessEntityID,
+
                     SubCategoryName = subCategory.SubCategoryName,
                     Value = view.Value,
                     UserName = User.Identity.Name,
@@ -47,7 +48,8 @@ namespace AutoTest.Controllers
             }
             //Si el modelo no es valido lo volvemos a pintar 
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName");
+            ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName");
+
             return View(view);
         }
 

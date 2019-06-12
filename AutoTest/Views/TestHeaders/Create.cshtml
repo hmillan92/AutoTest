@@ -40,7 +40,7 @@
         </div>
     </div>
 }
-<h4>My Tests</h4>
+<h4>Summary Importance</h4>
 <hr />
 @if (Model.Details.Count == 0)
 {
@@ -51,7 +51,10 @@ else
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Details[0].SubCategoryName)
+            @Html.DisplayNameFor(model => model.Details[0].BusinessEntityID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details[0].SubCategory.SubCategoryName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Details[0].Value)
@@ -61,22 +64,25 @@ else
 
     @foreach (var item in Model.Details)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubCategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Value)
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "DeleteSubCategory", new { id = item.SubCategoryID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure to delete this record?')" })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.BusinessEntityID)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SubCategory.SubCategoryName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Value)
+    </td>
+    @*<td>
+        @Html.ActionLink("Delete", "DeleteSubCategory", new { id = item.SubCategoryID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure to delete this record?')" })
+    </td>*@
+</tr>
     }
 
     <tr>
         <td colspan="4" align="right">
-            <strong>Total</strong>
+            <strong>Result</strong>
         </td>
         <td align="right">
             <strong> @Html.DisplayFor(model => model.TotalSummaryImportance)</strong>
