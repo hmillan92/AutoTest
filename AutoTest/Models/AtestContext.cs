@@ -41,6 +41,8 @@ namespace AutoTest.Models
 
         public DbSet<TestDetailTmp> TestDetailTmps { get; set; }
 
+        public DbSet<Persona> Personas { get; set; }
+
 
     }
 }

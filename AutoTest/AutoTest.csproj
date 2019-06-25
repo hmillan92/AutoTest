@@ -221,6 +221,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PersonasController.cs" />
     <Compile Include="Controllers\PruebasController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Models\Lista.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewTestView.cs" />
+    <Compile Include="Models\Persona.cs" />
     <Compile Include="Models\Prueba.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\State.cs" />
@@ -362,6 +364,11 @@
     <Content Include="Views\TestHeaders\Edit.cshtml" />
     <Content Include="Views\TestHeaders\Index.cshtml" />
     <Content Include="Views\TestHeaders\AddSubCategory.cshtml" />
+    <Content Include="Views\Personas\Create.cshtml" />
+    <Content Include="Views\Personas\Delete.cshtml" />
+    <Content Include="Views\Personas\Details.cshtml" />
+    <Content Include="Views\Personas\Edit.cshtml" />
+    <Content Include="Views\Personas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -33,7 +33,7 @@
                     <div class="col-md-offset-2 col-md-10">
                             <input type="submit" value="Create" class="btn btn-primary" />
                             @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Summary Importance", "AddSubCategory", new { }, new { @class = "btn btn-light" })
+                        @Html.ActionLink("Summary Importance", "SummaryImportance", new { }, new { @class = "btn btn-light" })
                     </div>
                 </div>
             </div>
@@ -51,10 +51,7 @@ else
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Details[0].BusinessEntityID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Details[0].SubCategory.SubCategoryName)
+            @Html.DisplayNameFor(model => model.Details[0].SubCategoryName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Details[0].Value)
@@ -66,10 +63,7 @@ else
     {
 <tr>
     <td>
-        @Html.DisplayFor(modelItem => item.BusinessEntityID)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.SubCategory.SubCategoryName)
+        @Html.DisplayFor(modelItem => item.SubCategoryName)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.Value)
