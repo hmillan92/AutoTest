@@ -2,9 +2,18 @@
 
 @{
     ViewBag.Title = "Create";
+
 }
 
 <h2>Create</h2>
+@if (ViewBag.Msg != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Msg
+    </div>
+}
+
+
 
 
 @using (Html.BeginForm())
@@ -31,8 +40,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Create" class="btn btn-primary" />
-                            @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                        @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
                         @Html.ActionLink("Summary Importance", "SummaryImportance", new { }, new { @class = "btn btn-light" })
                     </div>
                 </div>
@@ -48,44 +57,42 @@
 }
 else
 {
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Details[0].SubCategoryName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Details[0].Value)
-        </th>
-        <th></th>
-    </tr>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Details[0].SubCategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Details[0].Value)
+            </th>
+            <th></th>
+        </tr>
 
-    @foreach (var item in Model.Details)
-    {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.SubCategoryName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Value)
-    </td>
-    @*<td>
-        @Html.ActionLink("Delete", "DeleteSubCategory", new { id = item.SubCategoryID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure to delete this record?')" })
-    </td>*@
-</tr>
-    }
+        @foreach (var item in Model.Details)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubCategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
 
-    <tr>
-        <td colspan="4" align="right">
-            <strong>Result</strong>
-        </td>
-        <td align="right">
-            <strong> @Html.DisplayFor(model => model.TotalSummaryImportance)</strong>
-        </td>
+            </tr>
+        }
 
-        <th></th>
-    </tr>
+        <tr>
+            <td colspan="4" align="right">
+                <strong>Result</strong>
+            </td>
+            <td align="right">
+                <strong> @Html.DisplayFor(model => model.TotalSummaryImportance)</strong>
+            </td>
 
-</table>
+            <th></th>
+        </tr>
+
+    </table>
 }
 
 @section Scripts {
