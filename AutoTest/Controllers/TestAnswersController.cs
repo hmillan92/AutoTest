@@ -10,107 +10,107 @@ using AutoTest.Models;
 
 namespace AutoTest.Controllers
 {
-    public class ListasController : Controller
+    public class TestAnswersController : Controller
     {
         private AtestContext db = new AtestContext();
 
-        // GET: Listas
+        // GET: TestAnswers
         public ActionResult Index()
         {
-            return View(db.Listas.ToList());
+            return View(db.TestAnswers.ToList());
         }
 
-        // GET: Listas/Details/5
+        // GET: TestAnswers/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lista lista = db.Listas.Find(id);
-            if (lista == null)
+            TestAnswer testAnswer = db.TestAnswers.Find(id);
+            if (testAnswer == null)
             {
                 return HttpNotFound();
             }
-            return View(lista);
+            return View(testAnswer);
         }
 
-        // GET: Listas/Create
+        // GET: TestAnswers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Listas/Create
+        // POST: TestAnswers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Lista lista)
+        public ActionResult Create([Bind(Include = "TestAnswerID,Value")] TestAnswer testAnswer)
         {
             if (ModelState.IsValid)
             {
-                db.Listas.Add(lista);
+                db.TestAnswers.Add(testAnswer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(lista);
+            return View(testAnswer);
         }
 
-        // GET: Listas/Edit/5
+        // GET: TestAnswers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lista lista = db.Listas.Find(id);
-            if (lista == null)
+            TestAnswer testAnswer = db.TestAnswers.Find(id);
+            if (testAnswer == null)
             {
                 return HttpNotFound();
             }
-            return View(lista);
+            return View(testAnswer);
         }
 
-        // POST: Listas/Edit/5
+        // POST: TestAnswers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Lista lista)
+        public ActionResult Edit([Bind(Include = "TestAnswerID,Value")] TestAnswer testAnswer)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(lista).State = EntityState.Modified;
+                db.Entry(testAnswer).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(lista);
+            return View(testAnswer);
         }
 
-        // GET: Listas/Delete/5
+        // GET: TestAnswers/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lista lista = db.Listas.Find(id);
-            if (lista == null)
+            TestAnswer testAnswer = db.TestAnswers.Find(id);
+            if (testAnswer == null)
             {
                 return HttpNotFound();
             }
-            return View(lista);
+            return View(testAnswer);
         }
 
-        // POST: Listas/Delete/5
+        // POST: TestAnswers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Lista lista = db.Listas.Find(id);
-            db.Listas.Remove(lista);
+            TestAnswer testAnswer = db.TestAnswers.Find(id);
+            db.TestAnswers.Remove(testAnswer);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

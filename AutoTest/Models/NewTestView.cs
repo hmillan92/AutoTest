@@ -19,8 +19,8 @@ namespace AutoTest.Models
 
         public List<TestDetailTmp> Details { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
-        public double TotalSummaryImportance { get { return Details == null ? 0 : Details.Sum(d => d.Value)/3; } }
+        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
+        //public double TotalSummaryImportance { get { return Details == null ? 0 : Details.Sum(d => d.TestAnswerID)/3; } }
 
     }
 }

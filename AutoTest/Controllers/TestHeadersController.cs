@@ -4,10 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using AutoTest.Clases;
 using AutoTest.Models;
+using Newtonsoft.Json.Linq;
 
 namespace AutoTest.Controllers
 {
@@ -15,6 +17,72 @@ namespace AutoTest.Controllers
     public class TestHeadersController : Controller
     {
         private AtestContext db = new AtestContext();
+
+        [HttpPost]
+        public ActionResult editdetailtmp(int id, string propertyName, string value)
+        {
+            var status = false;
+            var message = "";
+
+            //Update to database
+            using (AtestContext db = new AtestContext())
+            {
+                var testDetailTmp = db.TestDetailTmps.Find(id);
+
+                object updateValue = value;
+                bool isValid = true;
+
+                if (propertyName == "TestAnswerID")
+                {
+                    int newTestAnswerID = 0;
+                    if (int.TryParse(value, out newTestAnswerID))
+                    {
+                        updateValue = newTestAnswerID;
+                        //update value field
+                        value = db.TestAnswers.Where(a => a.TestAnswerID == newTestAnswerID).First().Value;
+                    }
+                    else
+                    {
+                        isValid = false;
+                    }
+                }
+
+                if (testDetailTmp != null && isValid)
+                {
+                    db.Entry(testDetailTmp).Entity.TestAnswerID = int.Parse(updateValue.ToString());
+                    db.SaveChanges();
+                    status = true;
+                }
+                else
+                {
+                    message = "Error!";
+                }
+            }
+
+            var response = new { value = value, status = status, message = message };
+            JObject o = JObject.FromObject(response);
+            return Content(o.ToString());
+        }
+
+
+        public ActionResult GetTestAnswerValor(int id)
+        {
+            //{'E':'Letter E','F':'Letter F','G':'Letter G', 'selected':'F'}
+            int selectedValueID = 0;
+            StringBuilder sb = new StringBuilder();
+            using (AtestContext db = new AtestContext())
+            {
+                var listValue = db.TestAnswers.OrderBy(a => a.Value).ToList();
+                foreach (var item in listValue)
+                {
+                    sb.Append(string.Format("'{0}':'{1}',", item.TestAnswerID, item.Value));
+                }
+
+                selectedValueID = db.TestDetailTmps.Where(a => a.TestDetailTmpID == id).First().TestAnswerID;
+            }
+            sb.Append(string.Format("'selected': '{0}'", selectedValueID));
+            return Content("{" + sb.ToString() + "}");
+        }
 
         public ActionResult SummaryImportance()
         {
@@ -27,7 +95,7 @@ namespace AutoTest.Controllers
             foreach (var item in SubCategories)
             {
                 new TestDetailTmp();
-                testDetailTmps.Add(new TestDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, Value = 0 });
+                testDetailTmps.Add(new TestDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, TestAnswerID = 1 });
             }
 
             //crea la variable de tipo lista para ingresar los datos en la tabla TestDetailTmp
@@ -48,8 +116,7 @@ namespace AutoTest.Controllers
                {
                 TempData["msg"] = "You have already selected this record, try another one ..";
                 return RedirectToAction("Create");
-            }
-                
+               }                
                 
         }
 

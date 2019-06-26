@@ -43,6 +43,6 @@ namespace AutoTest.Models
 
         public DbSet<Persona> Personas { get; set; }
 
-
+        public System.Data.Entity.DbSet<AutoTest.Models.TestAnswer> TestAnswers { get; set; }
     }
 }

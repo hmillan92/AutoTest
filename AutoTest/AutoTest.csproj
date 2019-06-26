@@ -226,6 +226,7 @@
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\SubCategoriesController.cs" />
+    <Compile Include="Controllers\TestAnswersController.cs" />
     <Compile Include="Controllers\TestHeadersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -245,6 +246,7 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubCategory.cs" />
+    <Compile Include="Models\TestAnswer.cs" />
     <Compile Include="Models\TestDetail.cs" />
     <Compile Include="Models\TestDetailTmp.cs" />
     <Compile Include="Models\TestHeader.cs" />
@@ -369,6 +371,11 @@
     <Content Include="Views\Personas\Details.cshtml" />
     <Content Include="Views\Personas\Edit.cshtml" />
     <Content Include="Views\Personas\Index.cshtml" />
+    <Content Include="Views\TestAnswers\Create.cshtml" />
+    <Content Include="Views\TestAnswers\Delete.cshtml" />
+    <Content Include="Views\TestAnswers\Details.cshtml" />
+    <Content Include="Views\TestAnswers\Edit.cshtml" />
+    <Content Include="Views\TestAnswers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
