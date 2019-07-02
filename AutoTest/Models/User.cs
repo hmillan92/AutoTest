@@ -36,8 +36,6 @@ namespace AutoTest.Models
 
         public virtual ICollection<TestDetail> TestDetails { get; set; }
 
-        public virtual ICollection<SubCategory> SubCategories { get; set; }
-
 
     }
 }

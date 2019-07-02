@@ -46,7 +46,7 @@ namespace AutoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TestAnswerID,Value")] TestAnswer testAnswer)
+        public ActionResult Create(TestAnswer testAnswer)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace AutoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TestAnswerID,Value")] TestAnswer testAnswer)
+        public ActionResult Edit(TestAnswer testAnswer)
         {
             if (ModelState.IsValid)
             {

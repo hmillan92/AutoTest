@@ -214,7 +214,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Clases\CombosHelper.cs" />
+    <Compile Include="Clases\DBHelper.cs" />
     <Compile Include="Clases\MailHelper.cs" />
+    <Compile Include="Clases\MovementsHelper.cs" />
     <Compile Include="Clases\UsersHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BusinessEntitiesController.cs" />
@@ -244,6 +246,7 @@
     <Compile Include="Models\Persona.cs" />
     <Compile Include="Models\Prueba.cs" />
     <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Models\TestAnswer.cs" />

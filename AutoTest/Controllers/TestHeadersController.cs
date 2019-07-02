@@ -175,17 +175,22 @@ namespace AutoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TestHeader testHeader)
+        public ActionResult Create(NewTestView view)
         {
             if (ModelState.IsValid)
             {
-                db.TestHeaders.Add(testHeader);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var response = MovementsHelper.NewTest(view, User.Identity.Name);
+                if (response.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError(string.Empty, response.Message);
             }
 
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserName", testHeader.UserID);
-            return View(testHeader);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserName", view.UserID);
+            view.Details = db.TestDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList();
+            return View(view);
         }
 
         // GET: TestHeaders/Edit/5
