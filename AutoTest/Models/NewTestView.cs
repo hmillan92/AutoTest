@@ -17,7 +17,9 @@ namespace AutoTest.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        public List<TestDetailTmp> Details { get; set; }
+        public List<TestSummaryDetailTmp> SummaryDetails { get; set; }
+
+        public List<TestQuestionDetailTmp> QuestionDetails { get; set; }
 
         //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
         //public double TotalSummaryImportance { get { return Details == null ? 0 : Details.Sum(d => d.TestAnswerID)/3; } }

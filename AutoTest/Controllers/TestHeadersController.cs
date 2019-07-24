@@ -18,8 +18,43 @@ namespace AutoTest.Controllers
     {
         private AtestContext db = new AtestContext();
 
+
+        public ActionResult ListSummaryDetailTmp()
+        {
+            //crea la lista para insertarlo en TestDetailTmp
+            List<SubCategory> SubCategories = new List<SubCategory>();
+
+            SubCategories = db.SubCategories.ToList<SubCategory>();
+            var testSummaryDetailTmps = new List<TestSummaryDetailTmp>();
+
+            foreach (var item in SubCategories)
+            {
+                new TestSummaryDetailTmp();
+                testSummaryDetailTmps.Add(new TestSummaryDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, TestAnswerID = 1 });
+            }
+
+
+            //Valida si hay registro 
+            int CantSummaryImportanceXUser = db.TestSummaryDetailTmps.Count(x => x.UserName == User.Identity.Name);
+
+            if (CantSummaryImportanceXUser == 0)
+            {
+                db.TestSummaryDetailTmps.AddRange(testSummaryDetailTmps);
+                db.SaveChanges();
+                return RedirectToAction("Create");
+            }
+
+
+            else
+            {
+                TempData["msg"] = "You have already selected this record, try another one ..";
+                return RedirectToAction("Create");
+            }
+
+        }
+
         [HttpPost]
-        public ActionResult editdetailtmp(int id, string propertyName, string value)
+        public ActionResult EditSummaryDetailTmp(int id, string propertyName, string value)
         {
             var status = false;
             var message = "";
@@ -27,7 +62,7 @@ namespace AutoTest.Controllers
             //Update to database
             using (AtestContext db = new AtestContext())
             {
-                var testDetailTmp = db.TestDetailTmps.Find(id);
+                var testSummaryDetailTmp = db.TestSummaryDetailTmps.Find(id);
 
                 object updateValue = value;
                 bool isValid = true;
@@ -47,9 +82,9 @@ namespace AutoTest.Controllers
                     }
                 }
 
-                if (testDetailTmp != null && isValid)
+                if (testSummaryDetailTmp != null && isValid)
                 {
-                    db.Entry(testDetailTmp).Entity.TestAnswerID = int.Parse(updateValue.ToString());
+                    db.Entry(testSummaryDetailTmp).Entity.TestAnswerID = int.Parse(updateValue.ToString());
                     db.SaveChanges();
                     status = true;
                 }
@@ -65,7 +100,7 @@ namespace AutoTest.Controllers
         }
 
 
-        public ActionResult GetTestAnswerValor(int id)
+        public ActionResult GetSummaryDetailTmpAnswer(int id)
         {
             //{'E':'Letter E','F':'Letter F','G':'Letter G', 'selected':'F'}
             int selectedValueID = 0;
@@ -78,50 +113,116 @@ namespace AutoTest.Controllers
                     sb.Append(string.Format("'{0}':'{1}',", item.TestAnswerID, item.Value));
                 }
 
-                selectedValueID = db.TestDetailTmps.Where(a => a.TestDetailTmpID == id).First().TestAnswerID;
+                selectedValueID = db.TestSummaryDetailTmps.Where(a => a.TestSummaryDetailTmpID == id).First().TestAnswerID;
             }
             sb.Append(string.Format("'selected': '{0}'", selectedValueID));
             return Content("{" + sb.ToString() + "}");
         }
 
-        public ActionResult SummaryImportance()
+        
+
+
+        public ActionResult ListQuestionDetailTmp()
         {
-            //crea las variables con el ID que necesitamos para insertarlo en TestDetailTmp
-            List<SubCategory>SubCategories = new List<SubCategory>();
+            //crea la lista para insertarlo en TestDetailTmp
+            List<Question> questions = new List<Question>();
 
-            SubCategories = db.SubCategories.ToList<SubCategory>();
-            var testDetailTmps = new List<TestDetailTmp>();
+            questions = db.Questions.ToList<Question>();
+            var testQuestionDetailTmps = new List<TestQuestionDetailTmp>();
 
-            foreach (var item in SubCategories)
+            foreach (var item in questions)
             {
-                new TestDetailTmp();
-                testDetailTmps.Add(new TestDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, TestAnswerID = 1 });
+                new TestQuestionDetailTmp();
+                testQuestionDetailTmps.Add(new TestQuestionDetailTmp() { BusinessEntityID = item.BusinessEntityID, SubCategoryID = item.SubCategoryID, QuestionID = item.QuestionID, QuestionName = item.QuestionName, UserName = User.Identity.Name, TestAnswerID = 1 });
             }
 
-            //crea la variable de tipo lista para ingresar los datos en la tabla TestDetailTmp
 
+            //Valida si hay registro 
+            int CantQuestionXUser = db.TestQuestionDetailTmps.Count(x => x.UserName == User.Identity.Name);
 
-            //Agrega los datos con sus parametros a la tabla TestDetailTmp
-            int CantSubCategoriesXUser = db.TestDetailTmps.Count( x => x.UserName == User.Identity.Name);
-
-                if (CantSubCategoriesXUser == 0)
-                {
-                db.TestDetailTmps.AddRange(testDetailTmps);
+            if (CantQuestionXUser == 0)
+            {
+                db.TestQuestionDetailTmps.AddRange(testQuestionDetailTmps);
                 db.SaveChanges();
                 return RedirectToAction("Create");
             }
 
-                
-               else
-               {
+
+            else
+            {
                 TempData["msg"] = "You have already selected this record, try another one ..";
                 return RedirectToAction("Create");
-               }                
-                
+            }
+
         }
 
-            // GET: TestHeaders
-            public ActionResult Index()
+        [HttpPost]
+        public ActionResult EditQuestionDetailTmp(int id, string propertyName, string value)
+        {
+            var status = false;
+            var message = "";
+
+            //Update to database
+            using (AtestContext db = new AtestContext())
+            {
+                var testQuestionDetailTmp = db.TestQuestionDetailTmps.Find(id);
+
+                object updateValue = value;
+                bool isValid = true;
+
+                if (propertyName == "TestAnswerID")
+                {
+                    int newTestAnswerID = 0;
+                    if (int.TryParse(value, out newTestAnswerID))
+                    {
+                        updateValue = newTestAnswerID;
+                        //update value field
+                        value = db.TestAnswers.Where(a => a.TestAnswerID == newTestAnswerID).First().Value;
+                    }
+                    else
+                    {
+                        isValid = false;
+                    }
+                }
+
+                if (testQuestionDetailTmp != null && isValid)
+                {
+                    db.Entry(testQuestionDetailTmp).Entity.TestAnswerID = int.Parse(updateValue.ToString());
+                    db.SaveChanges();
+                    status = true;
+                }
+                else
+                {
+                    message = "Error!";
+                }
+            }
+
+            var response = new { value = value, status = status, message = message };
+            JObject o = JObject.FromObject(response);
+            return Content(o.ToString());
+        }
+
+        public ActionResult GetQuestionDetailTmpAnswer(int id)
+        {
+            //{'E':'Letter E','F':'Letter F','G':'Letter G', 'selected':'F'}
+            int selectedValueID = 0;
+            StringBuilder sb = new StringBuilder();
+            using (AtestContext db = new AtestContext())
+            {
+                var listValue = db.TestAnswers.OrderBy(a => a.Value).ToList();
+                foreach (var item in listValue)
+                {
+                    sb.Append(string.Format("'{0}':'{1}',", item.TestAnswerID, item.Value));
+                }
+
+                selectedValueID = db.TestQuestionDetailTmps.Where(a => a.TestQuestionDetailTmpID == id).First().TestAnswerID;
+            }
+            sb.Append(string.Format("'selected': '{0}'", selectedValueID));
+            return Content("{" + sb.ToString() + "}");
+        }
+
+        // GET: TestHeaders
+        public ActionResult Index()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             if (user == null)
@@ -165,7 +266,8 @@ namespace AutoTest.Controllers
             var view = new NewTestView
             {
                 Date = DateTime.Now,
-                Details = db.TestDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList(),
+                SummaryDetails = db.TestSummaryDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList(),
+                QuestionDetails = db.TestQuestionDetailTmps.Where(tqdt => tqdt.UserName == User.Identity.Name).ToList(),
             };
             return View(view);
         }
@@ -189,7 +291,7 @@ namespace AutoTest.Controllers
 
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserName", view.UserID);
-            view.Details = db.TestDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList();
+            view.SummaryDetails = db.TestSummaryDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList();
             return View(view);
         }
 

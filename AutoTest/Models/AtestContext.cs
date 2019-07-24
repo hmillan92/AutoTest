@@ -39,10 +39,12 @@ namespace AutoTest.Models
 
         public DbSet<TestDetail> TestDetails { get; set; }
 
-        public DbSet<TestDetailTmp> TestDetailTmps { get; set; }
+        public DbSet<TestSummaryDetailTmp> TestSummaryDetailTmps { get; set; }
+
+        public DbSet<TestQuestionDetailTmp> TestQuestionDetailTmps { get; set; }
 
         public DbSet<Persona> Personas { get; set; }
 
-        public System.Data.Entity.DbSet<AutoTest.Models.TestAnswer> TestAnswers { get; set; }
+        public DbSet<TestAnswer> TestAnswers { get; set; }
     }
 }

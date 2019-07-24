@@ -24,13 +24,12 @@ namespace AutoTest.Models
         [Display(Name = "BusinessEntity")]
         public int BusinessEntityID { get; set; }
 
-
         public virtual BusinessEntity BusinessEntity { get; set; }
 
         public virtual ICollection<Question> Questions { get; set; }
 
-        public virtual ICollection<TestDetail> TestDetails { get; set; }
+        //public virtual ICollection<TestDetail> TestDetails { get; set; }
 
-        public virtual ICollection<TestDetailTmp> TestDetailTmps { get; set; }
+        public virtual ICollection<TestSummaryDetailTmp> TestSummaryDetailTmps { get; set; }
     }
 }

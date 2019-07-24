@@ -32,20 +32,20 @@ namespace AutoTest.Clases
                     db.TestHeaders.Add(testHeader);
                     db.SaveChanges();
 
-                    var details = db.TestDetailTmps.Where(tdt => tdt.UserName == userName).ToList();
+                    var details = db.TestSummaryDetailTmps.Where(tdt => tdt.UserName == userName).ToList();
                     foreach (var detail in details)
                     {
                         var testDetail = new TestDetail
                         {
                             TestHeaderID = testHeader.TestHeaderID,
-                            SubCategoryID = detail.SubCategoryID,
+                            //SubCategoryID = detail.SubCategoryID,
                             SubCategoryName = detail.SubCategoryName,
-                            TestAnswerID = detail.TestAnswerID,
+                            Value = int.Parse(detail.TestAnswer.Value),
                             UserID = user.UserID,
                         };
 
                         db.TestDetails.Add(testDetail);
-                        db.TestDetailTmps.Remove(detail);
+                        db.TestSummaryDetailTmps.Remove(detail);
                     }
 
                     db.SaveChanges();

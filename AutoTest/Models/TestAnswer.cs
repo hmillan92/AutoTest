@@ -16,8 +16,11 @@ namespace AutoTest.Models
         [Display(Name = "Valor")]
         public string Value { get; set; }
 
-        public virtual ICollection<TestDetailTmp> TestDetailTmps { get; set; }
+        public virtual ICollection<TestSummaryDetailTmp> TestSummaryDetailTmps { get; set; }
 
-        public virtual ICollection<TestDetail> TestDetail { get; set; }
+        public virtual ICollection<TestQuestionDetailTmp> TestQuestionDetailTmps { get; set; }
+
+
+        //public virtual ICollection<TestDetail> TestDetail { get; set; }
     }
 }

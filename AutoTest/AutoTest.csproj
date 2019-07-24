@@ -251,7 +251,8 @@
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Models\TestAnswer.cs" />
     <Compile Include="Models\TestDetail.cs" />
-    <Compile Include="Models\TestDetailTmp.cs" />
+    <Compile Include="Models\TestQuestionDetailTmp.cs" />
+    <Compile Include="Models\TestSummaryDetailTmp.cs" />
     <Compile Include="Models\TestHeader.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
