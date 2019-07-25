@@ -30,5 +30,7 @@ namespace AutoTest.Models
 
         public virtual ICollection<TestDetail> TestDetails { get; set; }
 
+        public virtual ICollection<TestDetailQuestion> TestDetailQuuestions { get; set; }
+
     }
 }

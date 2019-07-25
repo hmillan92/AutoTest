@@ -39,6 +39,8 @@ namespace AutoTest.Models
 
         public DbSet<TestDetail> TestDetails { get; set; }
 
+        public DbSet<TestDetailQuestion> TestDetailQuestions { get; set; }
+
         public DbSet<TestSummaryDetailTmp> TestSummaryDetailTmps { get; set; }
 
         public DbSet<TestQuestionDetailTmp> TestQuestionDetailTmps { get; set; }

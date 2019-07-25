@@ -62,7 +62,7 @@
     </ul>
     <br />
     <br />
-  
+
 
     <div class="col-md-12 text-right">
         <div class="form-group">
@@ -150,25 +150,32 @@ grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@ite
 
         <div class="row">
             @grid.GetHtml(
-             tableStyle: "table table-responsive table-striped table-bordered",
-             columns: grid.Columns(
-                 grid.Column(header: "SummaryImportance", format: @<text><div class="" data-id="@item.TestSummaryDetailTmpID" data-propertyname="Name">@item.SubCategoryName</div></text>),
+              tableStyle: "table table-responsive table-striped table-bordered",
+              columns: grid.Columns(
+                  grid.Column(header: "SummaryImportance", format: @<text><div class="" data-id="@item.TestSummaryDetailTmpID" data-propertyname="Name">@item.SubCategoryName</div></text>),
 grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@item.TestSummaryDetailTmpID" data-propertyname="TestAnswerID">@item.TestAnswer.Value</div></text>)
 )
 )
 
         </div>
-        <div class="col-md-12 text-right">
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+        using (Html.BeginForm("Create", null))
+        {
+            @Html.AntiForgeryToken()
 
-                    @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
-                    <input type="submit" value="Finish" class="btn btn-primary" />
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.Date)
+            <div class="col-md-12 text-right">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
 
+                        @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
+                        <input type="submit" value="Finish" class="btn btn-primary"/>
+
+                    </div>
                 </div>
             </div>
-        </div>
 
+        }
     }
 
     <script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>

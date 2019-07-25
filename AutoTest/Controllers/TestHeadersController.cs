@@ -292,6 +292,7 @@ namespace AutoTest.Controllers
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserName", view.UserID);
             view.SummaryDetails = db.TestSummaryDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList();
+            view.QuestionDetails = db.TestQuestionDetailTmps.Where(tdt => tdt.UserName == User.Identity.Name).ToList();
             return View(view);
         }
 

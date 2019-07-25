@@ -32,7 +32,8 @@ namespace AutoTest.Clases
                     db.TestHeaders.Add(testHeader);
                     db.SaveChanges();
 
-                    var details = db.TestSummaryDetailTmps.Where(tdt => tdt.UserName == userName).ToList();
+                    var details = db.TestSummaryDetailTmps.Where(tsdt => tsdt.UserName == userName).ToList();
+                    var questionDetails = db.TestQuestionDetailTmps.Where(tqdt => tqdt.UserName == userName).ToList();
                     foreach (var detail in details)
                     {
                         var testDetail = new TestDetail
@@ -46,6 +47,21 @@ namespace AutoTest.Clases
 
                         db.TestDetails.Add(testDetail);
                         db.TestSummaryDetailTmps.Remove(detail);
+                    }
+
+                    foreach (var detail2 in questionDetails)
+                    {
+                        var testDetailQuestion = new TestDetailQuestion
+                        {
+                            TestHeaderID = testHeader.TestHeaderID,
+                            //SubCategoryID = detail2.SubCategoryID,
+                            QuestionName = detail2.QuestionName,
+                            Value = int.Parse(detail2.TestAnswer.Value),
+                            UserID = user.UserID,
+                        };
+
+                        db.TestDetailQuestions.Add(testDetailQuestion);
+                        db.TestQuestionDetailTmps.Remove(detail2);
                     }
 
                     db.SaveChanges();
