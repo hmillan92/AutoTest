@@ -17,10 +17,10 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Test</h4>
+        @*<h4>Test</h4>*@
         @Html.HiddenFor(model => model.UserID)
         @Html.HiddenFor(model => model.Date)
-        <hr />
+        @*<hr />*@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="row">
@@ -48,53 +48,71 @@
         </div>
     </div>
 }
-<h4>Auto Test</h4>
-<hr />
-@if (Model.SummaryDetails.Count() == 0 && Model.QuestionDetails.Count() == 0)
+
+@if (Model.QuestionDetails.Count() == 0 && Model.SummaryDetails.Count() == 0)
 {
-    @Html.ActionLink("Start", "ListSummaryDetailTmp", new { }, new { @class = "btn btn-info" })
+    <h4><strong>Before starting...</strong></h4>
+    <hr />
+    <br />
+    <ul>
+        <li>It will start with the Business Entities and then with the Summary Importance</li>
+        <li>To rate select a number from 1 to 3</li>
+        <li>When you get to evaluate Summary Importance and finish evaluating it, press the Finish button</li>
+        <li>When you press the Finish button, the AutoTest will end, and the system will make some calculations and you will be able to see or download your results in the My Results section</li>
+    </ul>
+    <br />
+    <br />
+  
+
+    <div class="col-md-12 text-right">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Start", "ListQuestionDetailTmp", new { }, new { @class = "btn btn-info" })
+            </div>
+        </div>
+    </div>
 }
 
 
-@if (Model.SummaryDetails.Count() > Model.QuestionDetails.Count())
+@if (Model.QuestionDetails.Count() != 0 && Model.SummaryDetails.Count() == 0)
 {
-
-    WebGrid grid = new WebGrid(Model.SummaryDetails, rowsPerPage: 8);
+    WebGrid grid = new WebGrid(Model.QuestionDetails, rowsPerPage: 16);
 
     <div class="row">
         @grid.GetHtml(
          tableStyle: "table table-responsive table-striped table-bordered",
          columns: grid.Columns(
-             grid.Column(header: "SummaryImportance", format: @<text><div class="" data-id="@item.TestSummaryDetailTmpID" data-propertyname="Name">@item.SubCategoryName</div></text>),
-grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@item.TestSummaryDetailTmpID" data-propertyname="TestAnswerID">@item.TestAnswer.Value</div></text>)
+             grid.Column(header: "QuestionDetail", format: @<text><div class="" data-id="@item.TestQuestionDetailTmpID" data-propertyname="Name">@item.QuestionName</div></text>),
+grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@item.TestQuestionDetailTmpID" data-propertyname="TestAnswerID">@item.TestAnswer.Value</div></text>)
 )
 )
-
     </div>
+
     <div class="col-md-12 text-right">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-
                 @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
-                @Html.ActionLink("Save and Next", "ListQuestionDetailTmp", new { }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Save and Next", "ListSummaryDetailTmp", new { }, new { @class = "btn btn-info" })
 
             </div>
         </div>
     </div>
-
 }
+
 
 @section scripts{
     <script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>
+
     <script>
-        $('.editSelect').editable('/TestHeaders/EditSummaryDetailTmp', {
+
+        $('.editSelect').editable('/TestHeaders/EditQuestionDetailTmp', {
             cssclass: 'jeditForm',
             tooltip: 'Valorar',
             width: 'none',
             height: 'none',
             type: 'select',
             submit: 'Ok',
-            loadurl: '/TestHeaders/GetSummaryDetailTmpAnswer',
+            loadurl: '/TestHeaders/GetQuestionDetailTmpAnswer',
             loaddata: function () {
                 return { id: $(this).data('id') }
             },
@@ -125,43 +143,44 @@ grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@ite
 
 
 
-    @if (Model.QuestionDetails.Count() > Model.SummaryDetails.Count())
+    @if (Model.SummaryDetails.Count() != 0 && Model.QuestionDetails.Count() != 0)
     {
-        WebGrid grid = new WebGrid(Model.QuestionDetails, rowsPerPage: 16);
+
+        WebGrid grid = new WebGrid(Model.SummaryDetails, rowsPerPage: 8);
 
         <div class="row">
             @grid.GetHtml(
              tableStyle: "table table-responsive table-striped table-bordered",
              columns: grid.Columns(
-                 grid.Column(header: "QuestionDetail", format: @<text><div class="" data-id="@item.TestQuestionDetailTmpID" data-propertyname="Name">@item.QuestionName</div></text>),
-grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@item.TestQuestionDetailTmpID" data-propertyname="TestAnswerID">@item.TestAnswer.Value</div></text>)
+                 grid.Column(header: "SummaryImportance", format: @<text><div class="" data-id="@item.TestSummaryDetailTmpID" data-propertyname="Name">@item.SubCategoryName</div></text>),
+grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@item.TestSummaryDetailTmpID" data-propertyname="TestAnswerID">@item.TestAnswer.Value</div></text>)
 )
 )
-        </div>
 
+        </div>
         <div class="col-md-12 text-right">
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
+
                     @Html.ActionLink("Back to List", "Index", new { }, new { @class = "btn btn-success" })
                     <input type="submit" value="Finish" class="btn btn-primary" />
+
                 </div>
             </div>
         </div>
+
     }
 
-
     <script src="https://www.appelsiini.net/download/jquery.jeditable.js"></script>
-
     <script>
-
-        $('.editSelect').editable('/TestHeaders/EditQuestionDetailTmp', {
+        $('.editSelect').editable('/TestHeaders/EditSummaryDetailTmp', {
             cssclass: 'jeditForm',
             tooltip: 'Valorar',
             width: 'none',
             height: 'none',
             type: 'select',
             submit: 'Ok',
-            loadurl: '/TestHeaders/GetQuestionDetailTmpAnswer',
+            loadurl: '/TestHeaders/GetSummaryDetailTmpAnswer',
             loaddata: function () {
                 return { id: $(this).data('id') }
             },
