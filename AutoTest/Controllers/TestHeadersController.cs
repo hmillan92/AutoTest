@@ -30,7 +30,7 @@ namespace AutoTest.Controllers
             foreach (var item in SubCategories)
             {
                 new TestSummaryDetailTmp();
-                testSummaryDetailTmps.Add(new TestSummaryDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, TestAnswerID = 1 });
+                testSummaryDetailTmps.Add(new TestSummaryDetailTmp() { SubCategoryID = item.SubCategoryID, SubCategoryName = item.SubCategoryName, UserName = User.Identity.Name, TestAnswerID = DBHelper.GetValue("1", db) });
             }
 
 
@@ -133,7 +133,7 @@ namespace AutoTest.Controllers
             foreach (var item in questions)
             {
                 new TestQuestionDetailTmp();
-                testQuestionDetailTmps.Add(new TestQuestionDetailTmp() { BusinessEntityID = item.BusinessEntityID, SubCategoryID = item.SubCategoryID, QuestionID = item.QuestionID, QuestionName = item.QuestionName, UserName = User.Identity.Name, TestAnswerID = 1 });
+                testQuestionDetailTmps.Add(new TestQuestionDetailTmp() { BusinessEntityID = item.BusinessEntityID, SubCategoryID = item.SubCategoryID, QuestionID = item.QuestionID, QuestionName = item.QuestionName, UserName = User.Identity.Name, TestAnswerID = DBHelper.GetValue("1", db) });
             }
 
 

@@ -158,7 +158,7 @@ grid.Column(header: "Value", format:@<text><div class="editSelect" data-id="@ite
 )
 
         </div>
-        using (Html.BeginForm("Create", null))
+        using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 

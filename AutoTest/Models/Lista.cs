@@ -15,6 +15,7 @@ namespace AutoTest.Models
         [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(100, ErrorMessage = "The field {0} must be maximun {1} characters")]
         [Display(Name = "Valor")]
+        [Index("Lista_Valor_Index", IsUnique = true)]
         public string Valor { get; set; }
 
         public virtual ICollection<Prueba> Pruebas { get; set; }

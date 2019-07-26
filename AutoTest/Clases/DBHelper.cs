@@ -45,5 +45,17 @@ namespace AutoTest.Clases
             }
             return state.StateID;
         }
+
+        public static int GetValue(string value, AtestContext db)
+        {
+            var testAnswer = db.TestAnswers.Where(s => s.Value == value).FirstOrDefault();
+            if (testAnswer == null)
+            {
+                testAnswer = new TestAnswer { Value = value, };
+                db.TestAnswers.Add(testAnswer);
+                db.SaveChanges();
+            }
+            return testAnswer.TestAnswerID;
+        }
     }
 }
