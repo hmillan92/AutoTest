@@ -21,9 +21,9 @@ namespace AutoTest.Clases
             return businessEntity.OrderBy(d => d.BusinessEntityName).ToList();
         }
 
-        public static List<SubCategory> GetSubCategories()
+        public static List<SubCategory> GetSubCategories(int businessEntityID)
         {
-            var subCategories = db.SubCategories.ToList();
+            var subCategories = db.SubCategories.Where( s => s.BusinessEntityID == businessEntityID).ToList();
             subCategories.Add(new SubCategory
             {
                 SubCategoryID = 0,

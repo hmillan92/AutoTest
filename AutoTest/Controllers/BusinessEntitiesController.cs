@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoTest.Clases;
 using AutoTest.Models;
 
 namespace AutoTest.Controllers
@@ -39,7 +40,7 @@ namespace AutoTest.Controllers
         // GET: BusinessEntities/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: BusinessEntities/Create
@@ -52,29 +53,16 @@ namespace AutoTest.Controllers
             if (ModelState.IsValid)
             {
                 db.BusinessEntities.Add(businessEntity);
-
-                try
+                var response = DBHelper.SaveChanges(db);
+                if (response.Succeeded)
                 {
-                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
-                {
-                    if (ex.InnerException != null &&
-                    ex.InnerException.InnerException != null &&
-                    ex.InnerException.InnerException.Message.Contains("_Index"))
-                    {
-                        ModelState.AddModelError(string.Empty, "this record already exists");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, ex.Message);
-                    }
-                }
 
+                ModelState.AddModelError(string.Empty, response.Message);            
             }
 
-            return View(businessEntity);
+            return PartialView(businessEntity);
         }
 
         // GET: BusinessEntities/Edit/5
@@ -102,24 +90,13 @@ namespace AutoTest.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(businessEntity).State = EntityState.Modified;
-                try
+                var response = DBHelper.SaveChanges(db);
+                if (response.Succeeded)
                 {
-                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
-                {
-                    if (ex.InnerException != null &&
-                    ex.InnerException.InnerException != null &&
-                    ex.InnerException.InnerException.Message.Contains("_Index"))
-                    {
-                        ModelState.AddModelError(string.Empty, "this record already exists");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, ex.Message);
-                    }
-                }
+
+                ModelState.AddModelError(string.Empty, response.Message);
             }
             return View(businessEntity);
         }
@@ -146,25 +123,13 @@ namespace AutoTest.Controllers
         {
             BusinessEntity businessEntity = db.BusinessEntities.Find(id);
             db.BusinessEntities.Remove(businessEntity);
-            try
+            var response = DBHelper.SaveChanges(db);
+            if (response.Succeeded)
             {
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null &&
-                    ex.InnerException.InnerException != null &&
-                    ex.InnerException.InnerException.Message.Contains("REFERENCE"))
-                {
-                    ModelState.AddModelError(string.Empty, "It can not be deleted because it contains many records, please delete the records that are associated with this category and try again");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
-            }
 
+            ModelState.AddModelError(string.Empty, response.Message);
             return View(businessEntity);
         }
 

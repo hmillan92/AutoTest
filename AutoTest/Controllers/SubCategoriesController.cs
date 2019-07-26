@@ -59,24 +59,13 @@ namespace AutoTest.Controllers
             if (ModelState.IsValid)
             {
                 db.SubCategories.Add(subCategory);
-                try
+                var response = DBHelper.SaveChanges(db);
+                if (response.Succeeded)
                 {
-                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
-                {
-                    if (ex.InnerException != null &&
-                    ex.InnerException.InnerException != null &&
-                    ex.InnerException.InnerException.Message.Contains("_Index"))
-                    {
-                        ModelState.AddModelError(string.Empty, "this record already exists");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, ex.Message);
-                    }
-                }
+
+                ModelState.AddModelError(string.Empty, response.Message);
             }
 
             ViewBag.BusinessEntityID = new SelectList(
@@ -117,8 +106,13 @@ namespace AutoTest.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(subCategory).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var response = DBHelper.SaveChanges(db);
+                if (response.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError(string.Empty, response.Message);
             }
             ViewBag.BusinessEntityID = new SelectList(
                 CombosHelper.GetBusinessEntities(), //trae del helper la lista ordenada del combo, 
@@ -150,25 +144,13 @@ namespace AutoTest.Controllers
         {
             SubCategory subCategory = db.SubCategories.Find(id);
             db.SubCategories.Remove(subCategory);
-            try
+            var response = DBHelper.SaveChanges(db);
+            if (response.Succeeded)
             {
-                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null &&
-                    ex.InnerException.InnerException != null &&
-                    ex.InnerException.InnerException.Message.Contains("REFERENCE"))
-                {
-                    ModelState.AddModelError(string.Empty, "It can not be deleted because it contains many records, please delete the records that are associated with this category and try again");
-                }
-                   else
-                    {
-                    ModelState.AddModelError(string.Empty, ex.Message);                    
-                    }
-            }
 
+            ModelState.AddModelError(string.Empty, response.Message);
             return View(subCategory);
         }
 

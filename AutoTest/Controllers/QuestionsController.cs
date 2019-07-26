@@ -42,7 +42,7 @@ namespace AutoTest.Controllers
         public ActionResult Create()
         {
             ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName");
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName");
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(0), "SubCategoryID", "SubCategoryName");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace AutoTest.Controllers
             }
 
             ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName", question.BusinessEntityID);
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(question.BusinessEntityID), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
             return View(question);
         }
 
@@ -78,7 +78,7 @@ namespace AutoTest.Controllers
                 return HttpNotFound();
             }
             ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName", question.BusinessEntityID);
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(question.BusinessEntityID), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
             return View(question);
         }
 
@@ -96,7 +96,7 @@ namespace AutoTest.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.BusinessEntityID = new SelectList(CombosHelper.GetBusinessEntities(), "BusinessEntityID", "BusinessEntityName", question.BusinessEntityID);
-            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
+            ViewBag.SubCategoryID = new SelectList(CombosHelper.GetSubCategories(question.BusinessEntityID), "SubCategoryID", "SubCategoryName", question.SubCategoryID);
             return View(question);
         }
 
@@ -124,14 +124,6 @@ namespace AutoTest.Controllers
             db.Questions.Remove(question);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        
-        public JsonResult GetSubCategories(int businessEntityID)
-        {
-            db.Configuration.ProxyCreationEnabled = false;
-            var subCategories = db.SubCategories.Where(b => b.BusinessEntityID == businessEntityID);
-            return Json(subCategories);
         }
 
 

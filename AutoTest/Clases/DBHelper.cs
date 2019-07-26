@@ -20,7 +20,7 @@ namespace AutoTest.Clases
                 var response = new Response { Succeeded = false };
                 if (ex.InnerException != null && ex.InnerException.InnerException != null && ex.InnerException.InnerException.Message.Contains("_Index"))
                 {
-                    response.Message = "There are a record with the same value.";
+                    response.Message = "this record already exists";
                 }
                 else if (ex.InnerException != null && ex.InnerException.InnerException != null && ex.InnerException.InnerException.Message.Contains("REFERENCE"))
                 {
