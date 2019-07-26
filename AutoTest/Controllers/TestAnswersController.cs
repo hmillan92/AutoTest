@@ -10,6 +10,7 @@ using AutoTest.Models;
 
 namespace AutoTest.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TestAnswersController : Controller
     {
         private AtestContext db = new AtestContext();
@@ -101,8 +102,25 @@ namespace AutoTest.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(testAnswer).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                try
+                {
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null &&
+                    ex.InnerException.InnerException != null &&
+                    ex.InnerException.InnerException.Message.Contains("_Index"))
+                    {
+                        ModelState.AddModelError(string.Empty, "this record already exists");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+                }
             }
             return View(testAnswer);
         }
@@ -129,8 +147,26 @@ namespace AutoTest.Controllers
         {
             TestAnswer testAnswer = db.TestAnswers.Find(id);
             db.TestAnswers.Remove(testAnswer);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null &&
+                    ex.InnerException.InnerException != null &&
+                    ex.InnerException.InnerException.Message.Contains("REFERENCE"))
+                {
+                    ModelState.AddModelError(string.Empty, "Not allowed, there are records in the temporary tables of users with this value, please wait until there are no records there using this value and try again or contact the administrator");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+            }
+
+            return View(testAnswer);
         }
 
         protected override void Dispose(bool disposing)
