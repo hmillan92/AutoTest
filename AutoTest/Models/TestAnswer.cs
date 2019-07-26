@@ -13,9 +13,10 @@ namespace AutoTest.Models
         public int TestAnswerID { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        [MaxLength(10, ErrorMessage = "The field {0} must be maximun {1} characters")]
+        [MaxLength(3, ErrorMessage = "The field {0} must be maximun {1} characters")]
         [Display(Name = "Values")]
         [Index("Value_Index", IsUnique = true)]
+        [RegularExpression("^\\d+$", ErrorMessage = "You can only enter integer numbers.")]
         public string Value { get; set; }
 
         public virtual ICollection<TestSummaryDetailTmp> TestSummaryDetailTmps { get; set; }
