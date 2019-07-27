@@ -14,7 +14,7 @@ namespace AutoTest.Models
 
         [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(100, ErrorMessage ="The field {0} must be maximun {1} characters")]
-        [Display(Name = "BussinessEntity")]
+        [Display(Name = "BussinessEntity", Prompt = "[Select a product...]")]
         [Index("BusinessEntity_BusinessEntityName_Index", IsUnique = true)]
         public string BusinessEntityName { get; set; }
 

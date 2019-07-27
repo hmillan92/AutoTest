@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AutoTest.Models.Question>
+﻿@model PagedList.IPagedList<AutoTest.Models.Question>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -12,34 +13,44 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.BusinessEntity.BusinessEntityName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BusinessEntity.BusinessEntityName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SubCategory.SubCategoryName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().SubCategory.SubCategoryName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.QuestionName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().QuestionName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubCategory.SubCategoryName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.QuestionName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.QuestionID }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Details", "Details", new { id=item.QuestionID }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Delete", "Delete", new { id=item.QuestionID }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusinessEntity.BusinessEntityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategory.SubCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.QuestionID }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Details", "Details", new { id = item.QuestionID }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.QuestionID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
+
+Page: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber), of: @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    sortOrder =
+    ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter
+}))

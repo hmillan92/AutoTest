@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoTest.Clases;
 using AutoTest.Models;
+using PagedList;
 
 namespace AutoTest.Controllers
 {
@@ -17,9 +18,11 @@ namespace AutoTest.Controllers
         private AtestContext db = new AtestContext();
 
         // GET: BusinessEntities
-        public ActionResult Index()
+        public ActionResult Index(int? page = null)
         {
-            return View(db.BusinessEntities.ToList());
+            page = (page ?? 1);
+            var businessEntity = db.BusinessEntities.OrderBy(be => be.BusinessEntityName);
+            return View(businessEntity.ToPagedList((int)page, 4));
         }
 
         // GET: BusinessEntities/Details/5
@@ -40,7 +43,7 @@ namespace AutoTest.Controllers
         // GET: BusinessEntities/Create
         public ActionResult Create()
         {
-            return PartialView();
+            return View();
         }
 
         // POST: BusinessEntities/Create
@@ -62,7 +65,7 @@ namespace AutoTest.Controllers
                 ModelState.AddModelError(string.Empty, response.Message);            
             }
 
-            return PartialView(businessEntity);
+            return View(businessEntity);
         }
 
         // GET: BusinessEntities/Edit/5

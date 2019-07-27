@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoTest.Clases;
 using AutoTest.Models;
+using PagedList;
 
 namespace AutoTest.Controllers
 {
@@ -17,10 +18,11 @@ namespace AutoTest.Controllers
         private AtestContext db = new AtestContext();
 
         // GET: SubCategories
-        public ActionResult Index()
+        public ActionResult Index(int? page = null)
         {
-            var subCategories = db.SubCategories.Include(s => s.BusinessEntity);
-            return View(subCategories.ToList());
+            page = (page ?? 1);
+            var subCategories = db.SubCategories.Include(s => s.BusinessEntity).OrderBy(s => s.BusinessEntity.BusinessEntityName).ThenBy(s => s.SubCategoryName);
+            return View(subCategories.ToPagedList((int)page, 4));
         }
 
         // GET: SubCategories/Details/5

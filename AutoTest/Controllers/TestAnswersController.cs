@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AutoTest.Models;
+using PagedList;
 
 namespace AutoTest.Controllers
 {
@@ -16,9 +17,11 @@ namespace AutoTest.Controllers
         private AtestContext db = new AtestContext();
 
         // GET: TestAnswers
-        public ActionResult Index()
+        public ActionResult Index(int? page = null)
         {
-            return View(db.TestAnswers.ToList());
+            page = (page ?? 1);
+            var testAnswer = db.TestAnswers.ToList().OrderBy(ta => ta.Value);
+            return View(testAnswer.ToPagedList((int)page, 4));
         }
 
         // GET: TestAnswers/Details/5

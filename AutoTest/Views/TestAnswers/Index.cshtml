@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AutoTest.Models.TestAnswer>
+﻿@model PagedList.IPagedList<AutoTest.Models.TestAnswer>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -12,22 +13,32 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Value)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Value)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Value)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TestAnswerID }, new { @class = "btn btn-warning" }) 
-            @Html.ActionLink("Details", "Details", new { id=item.TestAnswerID }, new { @class = "btn btn-info" }) 
-            @Html.ActionLink("Delete", "Delete", new { id=item.TestAnswerID }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TestAnswerID }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Details", "Details", new { id = item.TestAnswerID }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.TestAnswerID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
+
+Page: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber), of: @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    sortOrder =
+    ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter
+}))

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<AutoTest.Models.BusinessEntity>
-
+﻿@model PagedList.IPagedList<AutoTest.Models.BusinessEntity>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "BusinessEntity";
 }
@@ -7,12 +7,12 @@
 <h2>BusinessEntity</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "BusinessEntities", new { }, new { @class = "dialog-window btn btn-info" })
+    @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-primary" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.BusinessEntityName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BusinessEntityName)
         </th>
         <th></th>
     </tr>
@@ -33,41 +33,11 @@
 
 </table>
 
-<div class="modal fade" id="Create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2 class="modal-title"></h2>
-            </div>
-            <div class="modal-body"><div class="te">Please wait...</div></div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
-<script>
-    $(document).ready(function () {
-    $("body").on("click", "a.dialog-window", null, function (e) {
-        e.preventDefault();
-        var $link = $(this);
-        var title = $link.text();
-        $('#Create .modal-title').html(title);
-        var url = $(this).attr('href');
-        if (url.indexOf('#') == 0) {
-            $('#Create').modal('show');
-        }
-        else {
-            $.get(url, function (data) {
-                $('#Create .te').html(data);
-                $('#Create').modal();
-            }).success(function () { $('input:text:visible:first').focus(); });
-
-        }
-    });
-});
-
-</script>
-}
+Page: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber), of: @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    sortOrder =
+    ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter
+}))
