@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using AutoTest.Clases;
 using AutoTest.Models;
 using Newtonsoft.Json.Linq;
+using PagedList;
 
 namespace AutoTest.Controllers
 {
@@ -222,16 +223,17 @@ namespace AutoTest.Controllers
         }
 
         // GET: TestHeaders
-        public ActionResult Index()
+        public ActionResult Index(int? page = null)
         {
+            page = (page ?? 1);
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             if (user == null)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var testHeaders = db.TestHeaders.Where(t => t.UserID == user.UserID).Include(t => t.State).Include(t => t.User);
-            return View(testHeaders.ToList());
+            var testHeaders = db.TestHeaders.Where(t => t.UserID == user.UserID).Include(t => t.State).Include(t => t.User).OrderBy(th => th.TestHeaderID);
+            return View(testHeaders.ToPagedList((int)page, 10));
 
             //var testHeaders = db.TestHeaders.Include(t => t.State).Include(t => t.User);
             //return View(testHeaders.ToList());

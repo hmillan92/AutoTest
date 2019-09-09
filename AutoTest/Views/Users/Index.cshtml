@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AutoTest.Models.User>
+﻿@model PagedList.IPagedList<AutoTest.Models.User>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "User";
@@ -12,29 +13,45 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FullName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FullName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FullName)
-        </td>
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserID)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FullName)
+    </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserID }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Details", "Details", new { id=item.UserID }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserID }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.UserID }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Details", "Details", new { id = item.UserID }, new { @class = "btn btn-info" })
+        @Html.ActionLink("Delete", "Delete", new { id = item.UserID }, new { @class = "btn btn-danger" })
+    </td>
+</tr>
+    }
 
 </table>
+
+Page: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber), of: @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    sortOrder =
+    ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter
+}))

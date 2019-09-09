@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoTest.Clases;
 using AutoTest.Models;
+using PagedList;
 
 namespace AutoTest.Controllers
 {
@@ -17,9 +18,11 @@ namespace AutoTest.Controllers
         private AtestContext db = new AtestContext();
 
         // GET: Users
-        public ActionResult Index()
+        public ActionResult Index(int? page = null)
         {
-            return View(db.Users.ToList());
+            page = (page ?? 1);
+            var user = db.Users.OrderBy(u => u.UserID).ThenBy(u => u.FirstName);
+            return View(user.ToPagedList((int)page, 10));
         }
 
         // GET: Users/Details/5
